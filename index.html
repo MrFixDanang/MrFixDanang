@@ -602,7 +602,47 @@
       <label class="form-label">Tell me about the job</label>
       <textarea class="form-textarea" placeholder="Describe what needs fixing, your address, and preferred time..."></textarea>
     </div>
-    <button class="form-submit" onclick="alert('Message sent! I will contact you within a few hours via Zalo/phone. Thank you!')">Send Message →</button>
+    <button class="form-submit" id="submit-btn" type="button" onclick="submitForm()">Send Message →</button>
+
+<script>
+async function submitForm() {
+  const btn = document.getElementById('submit-btn');
+  const name = document.querySelector('input[type="text"]').value;
+  const phone = document.querySelector('input[type="tel"]').value;
+  const service = document.querySelector('select').value;
+  const message = document.querySelector('textarea').value;
+
+  if (!name || !phone) {
+    alert('Please enter your name and phone number.');
+    return;
+  }
+
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch('https://formspree.io/f/xlgkdjev', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ name, phone, service, message })
+    });
+
+    if (res.ok) {
+      btn.textContent = '✓ Message Sent!';
+      btn.style.background = '#1a7a3a';
+      document.querySelector('input[type="text"]').value = '';
+      document.querySelector('input[type="tel"]').value = '';
+      document.querySelector('textarea').value = '';
+    } else {
+      throw new Error('Failed');
+    }
+  } catch {
+    btn.textContent = 'Send Message →';
+    btn.disabled = false;
+    alert('Something went wrong. Please call us directly at +84 865 406 770');
+  }
+}
+</script>
   </div>
 </section>
 
