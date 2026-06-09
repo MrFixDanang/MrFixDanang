@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mr. Fix Da Nang — Handyman Services</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0d0d0d;
+    --white: #f5f0e8;
+    --orange: #ff5c00;
+    --orange-dim: #cc4900;
+    --gray: #1a1a1a;
+    --gray-mid: #2e2e2e;
+    --gray-light: #888;
+    --text: #f5f0e8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--black); color: var(--text); font-family: 'DM Sans', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+  /* LANG TOGGLE */
+  .lang-toggle {
+    display: flex; align-items: center; gap: 4px;
+    background: var(--gray); border: 1px solid var(--gray-mid);
+    border-radius: 4px; overflow: hidden;
+  }
+  .lang-btn {
+    padding: 6px 12px; font-size: 12px; font-weight: 500;
+    letter-spacing: 1px; cursor: pointer; border: none;
+    background: transparent; color: var(--gray-light);
+    font-family: 'DM Mono', monospace; transition: all .2s;
+  }
+  .lang-btn.active { background: var(--orange); color: var(--black); }
+  .lang-btn:hover:not(.active) { color: var(--orange); }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 48px;
+    background: rgba(13,13,13,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,92,0,0.15);
+    gap: 16px; flex-wrap: wrap;
+  }
+  .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 2px; color: var(--orange); }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a { font-size: 13px; font-weight: 400; letter-spacing: 1px; color: var(--gray-light); text-decoration: none; text-transform: uppercase; transition: color .2s; }
+  .nav-links a:hover { color: var(--orange); }
+  .nav-right { display: flex; align-items: center; gap: 12px; }
+  .nav-cta { background: var(--orange); color: var(--black); border: none; padding: 10px 22px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: background .2s; }
+  .nav-cta:hover { background: var(--orange-dim); }
+
+  /* HERO */
+  .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; padding: 120px 48px 80px; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 60% at 70% 50%, rgba(255,92,0,0.08) 0%, transparent 70%); pointer-events: none; }
+  .hero-tag { display: inline-flex; align-items: center; gap: 8px; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 2px; color: var(--orange); text-transform: uppercase; border: 1px solid rgba(255,92,0,0.3); padding: 6px 14px; margin-bottom: 28px; }
+  .hero-tag::before { content: ''; width: 6px; height: 6px; background: var(--orange); border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+  .hero-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(72px, 8vw, 120px); line-height: 0.95; letter-spacing: 2px; margin-bottom: 28px; }
+  .hero-title.vi { font-family: 'DM Sans', sans-serif; font-weight: 900; font-size: clamp(42px, 5vw, 72px); line-height: 1.15; letter-spacing: -0.5px; }
+  .hero-title span { color: var(--orange); }
+  .hero-sub { font-size: 16px; font-weight: 300; line-height: 1.7; color: rgba(245,240,232,0.65); max-width: 420px; margin-bottom: 40px; }
+  .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn-primary { background: var(--orange); color: var(--black); border: none; padding: 16px 36px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all .2s; text-decoration: none; display: inline-block; }
+  .btn-primary:hover { background: var(--orange-dim); transform: translateY(-2px); }
+  .btn-outline { background: transparent; color: var(--text); border: 1px solid rgba(245,240,232,0.3); padding: 16px 36px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 400; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all .2s; text-decoration: none; display: inline-block; }
+  .btn-outline:hover { border-color: var(--orange); color: var(--orange); }
+  .hero-right { display: flex; flex-direction: column; gap: 16px; padding-left: 60px; }
+  .stat-card { background: var(--gray); border: 1px solid var(--gray-mid); border-left: 3px solid var(--orange); padding: 20px 24px; animation: fadeUp .6s ease both; }
+  .stat-card:nth-child(2) { animation-delay: .1s; margin-left: 30px; }
+  .stat-card:nth-child(3) { animation-delay: .2s; }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:none} }
+  .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 48px; color: var(--orange); line-height: 1; }
+  .stat-label { font-size: 13px; color: var(--gray-light); margin-top: 4px; letter-spacing: 0.5px; }
+
+  /* SERVICES */
+  .services { padding: 100px 48px; background: var(--gray); position: relative; }
+  .section-label { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--orange); margin-bottom: 16px; }
+  .section-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(42px, 5vw, 72px); line-height: 1; letter-spacing: 2px; margin-bottom: 60px; }
+  .section-title.vi { font-family: 'DM Sans', sans-serif; font-weight: 900; font-size: clamp(28px, 3.5vw, 52px); line-height: 1.15; letter-spacing: -0.5px; }
+  .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2px; }
+  .service-card { background: var(--black); padding: 36px 32px; border: 1px solid var(--gray-mid); position: relative; overflow: hidden; transition: all .3s; cursor: default; }
+  .service-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--orange); transform: scaleX(0); transform-origin: left; transition: transform .3s; }
+  .service-card:hover::after { transform: scaleX(1); }
+  .service-card:hover { border-color: rgba(255,92,0,0.3); transform: translateY(-4px); }
+  .service-icon { font-size: 32px; margin-bottom: 20px; }
+  .service-name { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 1px; margin-bottom: 10px; line-height: 1; }
+  .service-name.vi { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 15px; line-height: 1.3; letter-spacing: 0; }
+  .service-desc { font-size: 13px; color: var(--gray-light); line-height: 1.7; }
+  .service-price { margin-top: 20px; font-family: 'DM Mono', monospace; font-size: 13px; color: var(--orange); }
+
+  /* PRICING */
+  .pricing { padding: 100px 48px; background: var(--black); }
+  .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; max-width: 960px; }
+  .pricing-card { background: var(--gray); border: 1px solid var(--gray-mid); padding: 40px 32px; position: relative; transition: all .3s; }
+  .pricing-card.featured { background: var(--orange); border-color: var(--orange); margin-top: -10px; padding-top: 50px; }
+  .pricing-card.featured .pricing-plan,
+  .pricing-card.featured .pricing-price,
+  .pricing-card.featured .pricing-unit,
+  .pricing-card.featured .pricing-feature { color: var(--black) !important; }
+  .pricing-card.featured .pricing-feature { border-color: rgba(0,0,0,0.15); }
+  .pricing-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--black); color: var(--orange); font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 4px 14px; border: 1px solid var(--orange); white-space: nowrap; }
+  .pricing-plan { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gray-light); margin-bottom: 16px; }
+  .pricing-price { font-family: 'Bebas Neue', sans-serif; font-size: 56px; line-height: 1; margin-bottom: 6px; }
+  .pricing-unit { font-size: 13px; color: var(--gray-light); margin-bottom: 28px; }
+  .pricing-features { list-style: none; margin-bottom: 32px; }
+  .pricing-feature { padding: 10px 0; border-bottom: 1px solid var(--gray-mid); font-size: 13px; color: rgba(245,240,232,0.7); display: flex; align-items: center; gap: 8px; }
+  .pricing-feature::before { content: '✓'; color: var(--orange); font-weight: 500; }
+  .pricing-card.featured .pricing-feature::before { color: var(--black); }
+
+  /* REVIEWS */
+  .reviews { padding: 100px 48px; background: var(--gray); }
+  .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2px; margin-top: 60px; }
+  .review-card { background: var(--black); border: 1px solid var(--gray-mid); padding: 32px; transition: border-color .3s; }
+  .review-card:hover { border-color: rgba(255,92,0,0.3); }
+  .review-stars { color: var(--orange); font-size: 16px; margin-bottom: 16px; letter-spacing: 2px; }
+  .review-text { font-size: 14px; line-height: 1.8; color: rgba(245,240,232,0.75); margin-bottom: 24px; font-style: italic; }
+  .review-author { display: flex; align-items: center; gap: 12px; }
+  .review-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--orange); display: flex; align-items: center; justify-content: center; font-family: 'DM Sans', sans-serif; font-weight: 900; font-size: 18px; color: var(--black); flex-shrink: 0; }
+  .review-name { font-size: 13px; font-weight: 500; }
+  .review-location { font-size: 11px; color: var(--gray-light); font-family: 'DM Mono', monospace; }
+
+  /* CONTACT */
+  .contact { padding: 100px 48px; background: var(--black); display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+  .contact-item { display: flex; gap: 20px; align-items: flex-start; padding: 24px 0; border-bottom: 1px solid var(--gray-mid); }
+  .contact-icon { width: 44px; height: 44px; background: var(--orange); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+  .contact-label { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 1px; color: var(--gray-light); text-transform: uppercase; margin-bottom: 4px; }
+  .contact-value { font-size: 16px; font-weight: 400; }
+  .form-group { margin-bottom: 20px; }
+  .form-label { display: block; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--gray-light); margin-bottom: 8px; }
+  .form-input, .form-select, .form-textarea { width: 100%; background: var(--gray); border: 1px solid var(--gray-mid); color: var(--text); padding: 14px 16px; font-family: 'DM Sans', sans-serif; font-size: 14px; transition: border-color .2s; outline: none; }
+  .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--orange); }
+  .form-select { appearance: none; cursor: pointer; }
+  .form-select option { background: var(--gray); }
+  .form-textarea { resize: vertical; min-height: 100px; }
+  .form-submit { width: 100%; background: var(--orange); color: var(--black); border: none; padding: 18px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: background .2s; margin-top: 8px; }
+  .form-submit:hover { background: var(--orange-dim); }
+
+  footer { background: var(--gray); border-top: 1px solid var(--gray-mid); padding: 32px 48px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+  .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; color: var(--orange); }
+  .footer-copy { font-size: 12px; color: var(--gray-light); font-family: 'DM Mono', monospace; }
+  .footer-links { display: flex; gap: 20px; }
+  .footer-links a { font-size: 12px; color: var(--gray-light); text-decoration: none; transition: color .2s; }
+  .footer-links a:hover { color: var(--orange); }
+  .stripe { height: 3px; background: repeating-linear-gradient(90deg, var(--orange) 0, var(--orange) 20px, transparent 20px, transparent 30px); }
+
+  @media (max-width: 768px) {
+    nav { padding: 16px 20px; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; padding: 100px 20px 60px; }
+    .hero-right { padding-left: 0; flex-direction: row; flex-wrap: wrap; }
+    .stat-card { flex: 1; min-width: 140px; }
+    .stat-card:nth-child(2) { margin-left: 0; }
+    .services, .pricing, .reviews { padding: 60px 20px; }
+    .pricing-grid { grid-template-columns: 1fr; }
+    .contact { grid-template-columns: 1fr; padding: 60px 20px; gap: 40px; }
+    footer { padding: 24px 20px; flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">MR. FIX DA NANG</div>
+  <ul class="nav-links">
+    <li><a href="#services" data-en="Services" data-vi="Dịch Vụ">Services</a></li>
+    <li><a href="#pricing" data-en="Pricing" data-vi="Bảng Giá">Pricing</a></li>
+    <li><a href="#reviews" data-en="Reviews" data-vi="Đánh Giá">Reviews</a></li>
+    <li><a href="#contact" data-en="Contact" data-vi="Liên Hệ">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('vi')">VI</button>
+    </div>
+    <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})" data-en="Book Now" data-vi="Đặt Lịch">Book Now</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-tag" data-en="Available in Da Nang · 24h Response" data-vi="Có mặt tại Đà Nẵng · Phản hồi trong 24h">Available in Da Nang · 24h Response</div>
+    <h1 class="hero-title" data-en="YOUR LOCAL<br><span>HANDYMAN</span><br>IN DA NANG" data-vi="THỢ SỬA CHỮA<br><span>TẠI NHÀ</span><br>ĐÀ NẴNG">YOUR LOCAL<br><span>HANDYMAN</span><br>IN DA NANG</h1>
+    <p class="hero-sub" data-en="Fast, reliable repairs for homes, apartments & Airbnb properties. No job too small — I show up on time and clean up after." data-vi="Sửa chữa nhanh chóng, uy tín cho nhà ở, căn hộ & Airbnb. Không việc nào quá nhỏ — Tôi đến đúng giờ và dọn dẹp sau khi hoàn thành.">Fast, reliable repairs for homes, apartments & Airbnb properties. No job too small — I show up on time and clean up after.</p>
+    <div class="hero-btns">
+      <a href="#contact" class="btn-primary" data-en="Book a repair" data-vi="Đặt lịch sửa chữa">Book a repair</a>
+      <a href="#services" class="btn-outline" data-en="See services" data-vi="Xem dịch vụ">See services</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="stat-card">
+      <div class="stat-num">24H</div>
+      <div class="stat-label" data-en="Response guarantee" data-vi="Cam kết phản hồi">Response guarantee</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">100%</div>
+      <div class="stat-label" data-en="Satisfaction or free revisit" data-vi="Hài lòng hoặc sửa lại miễn phí">Satisfaction or free revisit</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">DA NANG</div>
+      <div class="stat-label" data-en="Full city coverage" data-vi="Phục vụ toàn thành phố">Full city coverage</div>
+    </div>
+  </div>
+</section>
+
+<div class="stripe"></div>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="section-label" data-en="// What I do" data-vi="// Dịch vụ của tôi">// What I do</div>
+  <h2 class="section-title" data-en="SERVICES" data-vi="DỊCH VỤ">SERVICES</h2>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon">🔧</div>
+      <div class="service-name" data-en="Furniture Assembly & Repairs" data-vi="Lắp Đặt & Sửa Nội Thất">Furniture Assembly & Repairs</div>
+      <div class="service-desc" data-en="IKEA, local furniture, shelves, cabinets — assembled and fixed securely." data-vi="IKEA, nội thất nội địa, kệ, tủ — lắp đặt và sửa chắc chắn.">IKEA, local furniture, shelves, cabinets — assembled and fixed securely.</div>
+      <div class="service-price" data-en="From 150,000 VND" data-vi="Từ 150.000 VND">From 150,000 VND</div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">⚡</div>
+      <div class="service-name" data-en="Electrical & Plumbing" data-vi="Điện & Nước">Electrical & Plumbing</div>
+      <div class="service-desc" data-en="Minor electrical fixes, leaky faucets, toilet repairs, shower heads replaced." data-vi="Sửa điện nhỏ, vòi nước rò rỉ, sửa toilet, thay vòi sen.">Minor electrical fixes, leaky faucets, toilet repairs, shower heads replaced.</div>
+      <div class="service-price" data-en="From 200,000 VND" data-vi="Từ 200.000 VND">From 200,000 VND</div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">💡</div>
+      <div class="service-name" data-en="Light Bulb & Fixture Replacement" data-vi="Thay Bóng Đèn & Đèn">Light Bulb & Fixture Replacement</div>
+      <div class="service-desc" data-en="All types of bulbs, ceiling lights, and decorative fixtures installed." data-vi="Tất cả loại bóng đèn, đèn trần, đèn trang trí được lắp đặt.">All types of bulbs, ceiling lights, and decorative fixtures installed.</div>
+      <div class="service-price" data-en="From 100,000 VND" data-vi="Từ 100.000 VND">From 100,000 VND</div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🔒</div>
+      <div class="service-name" data-en="Door Lock & Key Replacement" data-vi="Thay Khóa Cửa & Chìa Khóa">Door Lock & Key Replacement</div>
+      <div class="service-desc" data-en="Locks replaced, keys cut, door alignment fixed — fast and secure." data-vi="Thay khóa, làm chìa, chỉnh cửa — nhanh chóng và an toàn.">Locks replaced, keys cut, door alignment fixed — fast and secure.</div>
+      <div class="service-price" data-en="From 180,000 VND" data-vi="Từ 180.000 VND">From 180,000 VND</div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🪟</div>
+      <div class="service-name" data-en="Curtain & Blind Installation" data-vi="Lắp Rèm Cửa & Màn Che">Curtain & Blind Installation</div>
+      <div class="service-desc" data-en="Curtain rods, blinds, and blackout curtains fitted properly first time." data-vi="Thanh treo rèm, cửa sổ chống nắng lắp đặt đúng cách ngay lần đầu.">Curtain rods, blinds, and blackout curtains fitted properly first time.</div>
+      <div class="service-price" data-en="From 150,000 VND" data-vi="Từ 150.000 VND">From 150,000 VND</div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🦟</div>
+      <div class="service-name" data-en="Mosquito Screen Repair" data-vi="Vá & Thay Lưới Chống Muỗi">Mosquito Screen Repair</div>
+      <div class="service-desc" data-en="Window and door screens repaired or replaced. Essential for Da Nang living." data-vi="Lưới cửa sổ và cửa ra vào được vá hoặc thay mới. Thiết yếu cho cuộc sống ở Đà Nẵng.">Window and door screens repaired or replaced. Essential for Da Nang living.</div>
+      <div class="service-price" data-en="From 120,000 VND" data-vi="Từ 120.000 VND">From 120,000 VND</div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">📶</div>
+      <div class="service-name" data-en="Wi-Fi Router Setup & Troubleshooting" data-vi="Cài Đặt & Sửa Lỗi Wi-Fi">Wi-Fi Router Setup & Troubleshooting</div>
+      <div class="service-desc" data-en="Router setup, dead spots fixed, extenders installed, network issues resolved." data-vi="Cài đặt router, sửa điểm mù Wi-Fi, lắp bộ khuếch đại, giải quyết sự cố mạng.">Router setup, dead spots fixed, extenders installed, network issues resolved.</div>
+      <div class="service-price" data-en="From 150,000 VND" data-vi="Từ 150.000 VND">From 150,000 VND</div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🏠</div>
+      <div class="service-name" data-en="Airbnb Property Maintenance" data-vi="Bảo Trì Nhà Airbnb">Airbnb Property Maintenance</div>
+      <div class="service-desc" data-en="Monthly retainer for hosts — on-call repairs between guest stays, 24h response." data-vi="Gói hàng tháng cho chủ nhà — sửa chữa theo yêu cầu giữa các lượt khách, phản hồi 24h.">Monthly retainer for hosts — on-call repairs between guest stays, 24h response.</div>
+      <div class="service-price" data-en="From 500,000 VND/month" data-vi="Từ 500.000 VND/tháng">From 500,000 VND/month</div>
+    </div>
+  </div>
+</section>
+
+<div class="stripe"></div>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="section-label" data-en="// Transparent rates" data-vi="// Bảng giá minh bạch">// Transparent rates</div>
+  <h2 class="section-title" data-en="PRICING" data-vi="BẢNG GIÁ">PRICING</h2>
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <div class="pricing-plan" data-en="One-off job" data-vi="Công việc lẻ">One-off job</div>
+      <div class="pricing-price">150K<span style="font-size:22px">/hr</span></div>
+      <div class="pricing-unit" data-en="VND per hour" data-vi="VND mỗi giờ">VND per hour</div>
+      <ul class="pricing-features">
+        <li class="pricing-feature" data-en="Any single repair job" data-vi="Bất kỳ công việc sửa chữa nào">Any single repair job</li>
+        <li class="pricing-feature" data-en="Same-day availability" data-vi="Có thể làm trong ngày">Same-day availability</li>
+        <li class="pricing-feature" data-en="Free assessment" data-vi="Kiểm tra miễn phí">Free assessment</li>
+        <li class="pricing-feature" data-en="Clean up included" data-vi="Bao gồm dọn dẹp">Clean up included</li>
+      </ul>
+      <a href="#contact" class="btn-outline" style="display:block;text-align:center;font-size:13px;padding:14px" data-en="Book Now" data-vi="Đặt Lịch">Book Now</a>
+    </div>
+    <div class="pricing-card featured">
+      <div class="pricing-badge" data-en="Most Popular" data-vi="Phổ Biến Nhất">Most Popular</div>
+      <div class="pricing-plan" data-en="Airbnb Monthly" data-vi="Gói Airbnb Hàng Tháng">Airbnb Monthly</div>
+      <div class="pricing-price">600K<span style="font-size:22px">/mo</span></div>
+      <div class="pricing-unit" data-en="VND per month" data-vi="VND mỗi tháng">VND per month</div>
+      <ul class="pricing-features">
+        <li class="pricing-feature" data-en="Unlimited small repairs" data-vi="Sửa chữa nhỏ không giới hạn">Unlimited small repairs</li>
+        <li class="pricing-feature" data-en="24-hour response" data-vi="Phản hồi trong 24 giờ">24-hour response</li>
+        <li class="pricing-feature" data-en="Monthly property check" data-vi="Kiểm tra nhà hàng tháng">Monthly property check</li>
+        <li class="pricing-feature" data-en="Priority booking" data-vi="Ưu tiên đặt lịch">Priority booking</li>
+      </ul>
+      <a href="#contact" class="btn-primary" style="display:block;text-align:center;font-size:13px;padding:14px;background:var(--black);color:var(--orange);border:none;text-decoration:none;" data-en="Get Started" data-vi="Bắt Đầu Ngay">Get Started</a>
+    </div>
+    <div class="pricing-card">
+      <div class="pricing-plan" data-en="Half-day package" data-vi="Gói Nửa Ngày">Half-day package</div>
+      <div class="pricing-price">500K<span style="font-size:22px">/4hr</span></div>
+      <div class="pricing-unit" data-en="VND for 4 hours" data-vi="VND cho 4 giờ">VND for 4 hours</div>
+      <ul class="pricing-features">
+        <li class="pricing-feature" data-en="Multiple jobs at once" data-vi="Nhiều công việc cùng lúc">Multiple jobs at once</li>
+        <li class="pricing-feature" data-en="Best value rate" data-vi="Giá tốt nhất">Best value rate</li>
+        <li class="pricing-feature" data-en="Full property walkthrough" data-vi="Kiểm tra toàn bộ nhà">Full property walkthrough</li>
+        <li class="pricing-feature" data-en="Priority scheduling" data-vi="Ưu tiên lịch hẹn">Priority scheduling</li>
+      </ul>
+      <a href="#contact" class="btn-outline" style="display:block;text-align:center;font-size:13px;padding:14px" data-en="Book Now" data-vi="Đặt Lịch">Book Now</a>
+    </div>
+  </div>
+</section>
+
+<div class="stripe"></div>
+
+<!-- REVIEWS -->
+<section class="reviews" id="reviews">
+  <div class="section-label" data-en="// What clients say" data-vi="// Khách hàng nói gì">// What clients say</div>
+  <h2 class="section-title" data-en="REVIEWS" data-vi="ĐÁNH GIÁ">REVIEWS</h2>
+  <div class="reviews-grid">
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text" data-en='"Fixed my leaky faucet and installed new curtains in under 2 hours. Super fast, clean work, and very affordable. Will definitely call again!"' data-vi='"Sửa vòi nước rò và lắp rèm mới trong chưa đầy 2 giờ. Nhanh, sạch sẽ và giá rất hợp lý. Chắc chắn sẽ gọi lại!"'>"Fixed my leaky faucet and installed new curtains in under 2 hours. Super fast, clean work, and very affordable. Will definitely call again!"</p>
+      <div class="review-author">
+        <div class="review-avatar">S</div>
+        <div>
+          <div class="review-name">Sarah M.</div>
+          <div class="review-location">Expat · Mỹ Khê Beach</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text" data-en='"I manage 3 Airbnb apartments and having a reliable handyman on call has saved me so many headaches. Guests are happier, reviews are better."' data-vi='"Tôi quản lý 3 căn hộ Airbnb và có thợ đáng tin cậy trực điện thoại đã giúp tôi tránh được rất nhiều rắc rối. Khách hài lòng hơn, đánh giá tốt hơn."'>"I manage 3 Airbnb apartments and having a reliable handyman on call has saved me so many headaches. Guests are happier, reviews are better."</p>
+      <div class="review-author">
+        <div class="review-avatar">T</div>
+        <div>
+          <div class="review-name">Tuấn N.</div>
+          <div class="review-location" data-en="Airbnb Host · An Thượng" data-vi="Chủ Airbnb · An Thượng">Airbnb Host · An Thượng</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text" data-en='"Repaired all my mosquito screens and set up my Wi-Fi extender. Showed up exactly on time and explained everything clearly. Highly recommend!"' data-vi='"Vá toàn bộ lưới chống muỗi và cài đặt bộ khuếch đại Wi-Fi. Đến đúng giờ và giải thích mọi thứ rõ ràng. Rất đáng giới thiệu!"'>"Repaired all my mosquito screens and set up my Wi-Fi extender. Showed up exactly on time and explained everything clearly. Highly recommend!"</p>
+      <div class="review-author">
+        <div class="review-avatar">L</div>
+        <div>
+          <div class="review-name">Lisa K.</div>
+          <div class="review-location" data-en="Homeowner · Hải Châu" data-vi="Chủ nhà · Hải Châu">Homeowner · Hải Châu</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="stripe"></div>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-info">
+    <div class="section-label" data-en="// Get in touch" data-vi="// Liên hệ ngay">// Get in touch</div>
+    <h2 class="section-title" data-en="BOOK A<br>REPAIR" data-vi="ĐẶT LỊCH<br>SỬA CHỮA">BOOK A<br>REPAIR</h2>
+    <div class="contact-item">
+      <div class="contact-icon">📞</div>
+      <div>
+        <div class="contact-label" data-en="Phone / Zalo" data-vi="Điện thoại / Zalo">Phone / Zalo</div>
+        <div class="contact-value">+84 865 406 770</div>
+      </div>
+    </div>
+    <div class="contact-item">
+      <div class="contact-icon">📍</div>
+      <div>
+        <div class="contact-label" data-en="Coverage Area" data-vi="Khu vực phục vụ">Coverage Area</div>
+        <div class="contact-value" data-en="All of Da Nang City" data-vi="Toàn thành phố Đà Nẵng">All of Da Nang City</div>
+      </div>
+    </div>
+    <div class="contact-item">
+      <div class="contact-icon">⏰</div>
+      <div>
+        <div class="contact-label" data-en="Hours" data-vi="Giờ làm việc">Hours</div>
+        <div class="contact-value" data-en="7am – 8pm · 7 days a week" data-vi="7 giờ sáng – 8 giờ tối · 7 ngày một tuần">7am – 8pm · 7 days a week</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-form">
+    <div class="form-group">
+      <label class="form-label" data-en="Your Name" data-vi="Họ và Tên">Your Name</label>
+      <input class="form-input" type="text" data-placeholder-en="Nguyen Van A" data-placeholder-vi="Nguyễn Văn A" placeholder="Nguyen Van A">
+    </div>
+    <div class="form-group">
+      <label class="form-label" data-en="Phone / Zalo Number" data-vi="Số điện thoại / Zalo">Phone / Zalo Number</label>
+      <input class="form-input" type="tel" placeholder="+84 xxx xxx xxx">
+    </div>
+    <div class="form-group">
+      <label class="form-label" data-en="Service Needed" data-vi="Dịch vụ cần">Service Needed</label>
+      <select class="form-select" id="service-select">
+        <option data-en="Furniture Assembly & Repairs" data-vi="Lắp Đặt & Sửa Nội Thất">Furniture Assembly & Repairs</option>
+        <option data-en="Electrical & Plumbing" data-vi="Điện & Nước">Electrical & Plumbing</option>
+        <option data-en="Light Bulb & Fixture Replacement" data-vi="Thay Bóng Đèn & Đèn">Light Bulb & Fixture Replacement</option>
+        <option data-en="Door Lock & Key Replacement" data-vi="Thay Khóa Cửa & Chìa Khóa">Door Lock & Key Replacement</option>
+        <option data-en="Curtain & Blind Installation" data-vi="Lắp Rèm Cửa & Màn Che">Curtain & Blind Installation</option>
+        <option data-en="Mosquito Screen Repair" data-vi="Vá & Thay Lưới Chống Muỗi">Mosquito Screen Repair</option>
+        <option data-en="Wi-Fi Setup & Troubleshooting" data-vi="Cài Đặt & Sửa Lỗi Wi-Fi">Wi-Fi Setup & Troubleshooting</option>
+        <option data-en="Airbnb Monthly Maintenance" data-vi="Bảo Trì Airbnb Hàng Tháng">Airbnb Monthly Maintenance</option>
+        <option data-en="Other / Multiple services" data-vi="Khác / Nhiều dịch vụ">Other / Multiple services</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label" data-en="Tell me about the job" data-vi="Mô tả công việc">Tell me about the job</label>
+      <textarea class="form-textarea" data-placeholder-en="Describe what needs fixing, your address, and preferred time..." data-placeholder-vi="Mô tả công việc cần sửa, địa chỉ và thời gian phù hợp..." placeholder="Describe what needs fixing, your address, and preferred time..."></textarea>
+    </div>
+    <button class="form-submit" id="submit-btn" type="button" onclick="submitForm()" data-en="Send Message →" data-vi="Gửi Tin Nhắn →">Send Message →</button>
+
+<script>
+let currentLang = 'en';
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+
+  // Switch fonts for headings — Bebas Neue breaks Vietnamese diacritics
+  const headings = document.querySelectorAll('.hero-title, .section-title, .service-name');
+  headings.forEach(el => {
+    if (lang === 'vi') el.classList.add('vi');
+    else el.classList.remove('vi');
+  });
+
+  document.querySelectorAll('[data-en]').forEach(el => {
+    const val = el.getAttribute('data-' + lang);
+    if (!val) return;
+    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') return;
+    if (el.tagName === 'OPTION') { el.textContent = val; return; }
+    if (val.includes('<')) { el.innerHTML = val; return; }
+    el.textContent = val;
+  });
+
+  document.querySelectorAll('[data-placeholder-en]').forEach(el => {
+    el.placeholder = el.getAttribute('data-placeholder-' + lang) || el.placeholder;
+  });
+}
+
+async function submitForm() {
+  const btn = document.getElementById('submit-btn');
+  const name = document.querySelector('input[type="text"]').value;
+  const phone = document.querySelector('input[type="tel"]').value;
+  const service = document.querySelector('select').value;
+  const message = document.querySelector('textarea').value;
+
+  const alertMsg = currentLang === 'vi' ? 'Vui lòng nhập tên và số điện thoại.' : 'Please enter your name and phone number.';
+  const sendingMsg = currentLang === 'vi' ? 'Đang gửi...' : 'Sending...';
+  const successMsg = currentLang === 'vi' ? '✓ Đã gửi!' : '✓ Message Sent!';
+  const errorMsg = currentLang === 'vi' ? 'Có lỗi xảy ra. Vui lòng gọi +84 865 406 770' : 'Something went wrong. Please call us at +84 865 406 770';
+
+  if (!name || !phone) { alert(alertMsg); return; }
+  btn.textContent = sendingMsg;
+  btn.disabled = true;
+
+  try {
+    const res = await fetch('https://formspree.io/f/xlgkdjev', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ name, phone, service, message, language: currentLang })
+    });
+    if (res.ok) {
+      btn.textContent = successMsg;
+      btn.style.background = '#1a7a3a';
+      document.querySelector('input[type="text"]').value = '';
+      document.querySelector('input[type="tel"]').value = '';
+      document.querySelector('textarea').value = '';
+    } else { throw new Error('Failed'); }
+  } catch {
+    btn.textContent = currentLang === 'vi' ? 'Gửi Tin Nhắn →' : 'Send Message →';
+    btn.disabled = false;
+    alert(errorMsg);
+  }
+}
+</script>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">MR. FIX DA NANG</div>
+  <div class="footer-copy">© 2026 · Fast · Reliable · Affordable</div>
+  <div class="footer-links">
+    <a href="#services" data-en="Services" data-vi="Dịch Vụ">Services</a>
+    <a href="#pricing" data-en="Pricing" data-vi="Bảng Giá">Pricing</a>
+    <a href="#contact" data-en="Contact" data-vi="Liên Hệ">Contact</a>
+  </div>
+</footer>
+
+</body>
+</html>
